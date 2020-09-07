@@ -95,19 +95,21 @@ __Arguments__
 - `safariOptions` - An `Object` containing a `url` key and optionally a `readerMode` key, a `tintColor`, and/or a `barTintColor`.
 
 __safariOptions__
-- `url` - A `String` containing the url you want to load in the Safari View
-- `readerMode` - A `Boolean` indicating to use Safari's Reader Mode if available
-- `tintColor` - A `String` containing a hex, rgba or rgba color to use for the browser controls
-- `barTintColor` - A `String` containing a hex, rgba or rgba color to use for the background of the browser controls (only available on iOS 10 and higher)
-- `fromBottom` - A 'Boolean' indicating to open the Safari View from the bottom
+- `url` - A `String` containing the url you want to load in the Safari View.
+- `readerMode` - A `Boolean` indicating to use Safari's Reader Mode if available.
+- `barCollapsing` - A `Boolean` Indicates if SFSafariViewController should enable collapsing of the navigation bar and hiding of the bottom toolbar when the user scrolls web content.
+- `tintColor` - A `String` containing a hex, rgba or rgba color to use for the browser controls.
+- `barTintColor` - A `String` containing a hex, rgba or rgba color to use for the background of the browser controls. (only available on iOS 10 and higher)
+- `fromBottom` - A 'Boolean' indicating to open the Safari View from the bottom.
 
 __Examples__
 ```js
 SafariView.show({
   url: "http://facebook.github.io/react/blog/2015/03/26/introducing-react-native.html",
-  readerMode: true // optional,
-  tintColor: "#000" // optional
-  barTintColor: "#fff" // optional
+  readerMode: true, // optional,
+  tintColor: "#000", // optional
+  barTintColor: "#fff", // optional
+  barCollapsing: true // optional
 });
 ```
 
