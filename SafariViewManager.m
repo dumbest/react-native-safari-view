@@ -29,7 +29,7 @@ RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"SafariViewOnShow", @"SafariViewOnDismiss"];
+    return @[@"SafariViewOnShow", @"SafariViewOnDismiss", @"SafariViewOnRedirect"];
 }
 
 RCT_EXPORT_METHOD(show:(NSDictionary *)args resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
@@ -42,12 +42,17 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args resolver:(RCTPromiseResolveBlock)res
 
     NSURL *url = [RCTConvert NSURL:args[@"url"]];
     BOOL readerMode = [args[@"readerMode"] boolValue];
+  BOOL barCollapsing = [args[@"barCollapsing"] boolValue];
     UIColor *tintColorString = args[@"tintColor"];
     UIColor *barTintColorString = args[@"barTintColor"];
     BOOL fromBottom = [args[@"fromBottom"] boolValue];
 
     // Initialize the Safari View
-    _safariView = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:readerMode];
+  SFSafariViewControllerConfiguration *config = [[SFSafariViewControllerConfiguration alloc] init];
+  config.entersReaderIfAvailable = readerMode;
+  config.barCollapsingEnabled = barCollapsing;
+  
+  _safariView = [[SFSafariViewController alloc] initWithURL:url configuration:config];
     _safariView.delegate = self;
 
     // Set tintColor if available
@@ -107,6 +112,14 @@ RCT_EXPORT_METHOD(dismiss)
     NSLog(@"[SafariView] SafariView dismissed.");
     if (hasListeners) {
         [self sendEventWithName:@"SafariViewOnDismiss" body:nil];
+    }
+}
+
+- (void)safariViewController:(SFSafariViewController *)controller initialLoadDidRedirectToURL:(NSURL *)URL{
+    NSLog(@"[SafariView] SafariView redirected.");
+
+    if (hasListeners) {
+        [self sendEventWithName:@"SafariViewOnRedirect" body:URL.absoluteString];
     }
 }
 @end
