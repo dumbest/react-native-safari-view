@@ -75,7 +75,12 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args resolver:(RCTPromiseResolveBlock)res
 
     // Set modal transition style
     if (fromBottom) {
+      if (@available(iOS 13.0, *)) {
+        _safariView.modalPresentationStyle = UIModalPresentationAutomatic;
+      } else {
+        // Fallback on earlier versions
         _safariView.modalPresentationStyle = UIModalPresentationOverFullScreen;
+      }
     }
 
     // get the view controller closest to the foreground
